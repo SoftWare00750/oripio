@@ -40,7 +40,7 @@ export default function CartScreen({ navigation }) {
       <FlatList
         data={cart.items}
         keyExtractor={(i) => i.menuItemId}
-        contentContainerStyle={{ paddingHorizontal: spacing.lg, paddingBottom: 260 }}
+        contentContainerStyle={{ paddingHorizontal: spacing.lg, paddingBottom: 320 }}
         ListEmptyComponent={
           <View style={styles.emptyWrap}>
             <Ionicons name="cart-outline" size={48} color={colors.border} />
@@ -158,13 +158,15 @@ const styles = StyleSheet.create({
   stepValue: { width: 22, textAlign: "center", color: colors.white, fontWeight: "700", fontSize: 12 },
   footer: {
     position: "absolute",
-    bottom: 0,
+    bottom: 96, // clears the floating pill navbar
     left: 0,
     right: 0,
     backgroundColor: colors.white,
     borderTopWidth: 1,
     borderTopColor: colors.border,
     padding: spacing.lg,
+    borderRadius: radius.lg,
+    marginHorizontal: spacing.sm,
   },
   promoRow: { flexDirection: "row", marginBottom: spacing.lg },
   promoInput: {

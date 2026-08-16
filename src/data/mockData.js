@@ -1,12 +1,11 @@
 // Local catalog data for the Oripio demo backend.
-// Photos are sourced from Wikimedia Commons (freely licensed) via the
-// stable Special:FilePath redirect, so no image hosting/downloading is
+// Photos are sourced from Pexels (free license, no attribution required)
+// via their stable images.pexels.com CDN, matching the warm, styled food
+// photography look of the reference designs. No downloading/hosting is
 // required — React Native fetches them directly at runtime.
 
-function wiki(filename, width = 900) {
-  return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(
-    filename
-  )}?width=${width}`;
+function pexels(id, width = 900) {
+  return `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${width}`;
 }
 
 function avatar(name, { background = "D62400", color = "fff", rounded = true } = {}) {
@@ -16,25 +15,33 @@ function avatar(name, { background = "D62400", color = "fff", rounded = true } =
 }
 
 export const IMAGES = {
-  cheeseburger: wiki("Cheeseburger.jpg"),
-  cheeseburger2: wiki("Cheeseburger 2.jpg"),
-  cheeseburgerMaison: wiki("Cheeseburger maison.jpg"),
-  homemadeCheeseburger: wiki("Homemade Cheeseburger.JPG"),
-  bigCheeseburger: wiki("Jack in the Box Big Cheeseburger.JPG"),
-  chickenSandwich: wiki("Grilled Chicken Sandwich.jpg"),
-  friedChicken: wiki("KFC Fried chicken.jpg"),
-  pizzaSupreme: wiki("Supreme pizza.jpg"),
-  pizzaClassic: wiki("Pizza.jpg"),
-  pizzaSlice: wiki("Pizza (1).jpg"),
-  vanillaIceCream: wiki("Vanilla ice cream cone.JPG"),
-  raspberryIceCream: wiki("Colorful Black Raspberry Ice Cream Cone (2420648653).jpg"),
-  steakGrilling: wiki("Grilling steak.jpg"),
-  steakGrill: wiki("Steak auf Grill.jpg"),
-  shrimp: wiki("Grilled shrimp.jpg"),
-  salmon: wiki("Grilled salmon.jpg"),
-  salmonFillet: wiki("Salmon fillet.JPG"),
-  hotDog: wiki("Hot Dog.jpg"),
+  burgerClassic: pexels(35628176),
+  burgerCheddar: pexels(35628183),
+  burgerSalsa: pexels(35628179),
+  burgerCrispy: pexels(35628175),
+  burgerRustic: pexels(35628177),
+  burgerPlate: pexels(35628169),
+  burgerGuac: pexels(35628184),
+  chickenBurger1: pexels(35628172),
+  chickenBurger2: pexels(35628181),
+  burgerBlackPlate: pexels(35628167),
+  burgerDecor: pexels(35628170),
+  burgerGuacFries: pexels(35628171),
+  burgerRelish: pexels(35628178),
+  friedChicken: pexels(5474676),
+  pizzaBoard: pexels(2762942),
+  pizzaPepperoni: pexels(2741457),
+  pizzaCloseup: pexels(17800186),
+  iceCreamCone: pexels(1978181),
+  steakFries: pexels(1352264),
+  steakPlated: pexels(769289),
+  seafoodGrilled: pexels(29617469),
+  seafoodSashimi: pexels(2871757),
+  hotDog: pexels(4113456),
 };
+
+// Kept as an alias so any older references still resolve.
+IMAGES.bigCheeseburger = IMAGES.burgerRelish;
 
 export const categories = [
   { id: "burger", name: "Burger" },
@@ -48,7 +55,7 @@ export const restaurants = [
   {
     id: "spicecraft",
     name: "SpiceCraft",
-    cover: IMAGES.bigCheeseburger,
+    cover: IMAGES.burgerRustic,
     logo: avatar("S"),
     followers: "128K",
     products: "2.310",
@@ -60,7 +67,7 @@ export const restaurants = [
   {
     id: "byte-bistro",
     name: "Byte Bistro",
-    cover: IMAGES.pizzaSupreme,
+    cover: IMAGES.pizzaBoard,
     logo: avatar("B"),
     followers: "96K",
     products: "1.842",
@@ -72,7 +79,7 @@ export const restaurants = [
   {
     id: "ramen-asian-kitchen",
     name: "Ramen, Asian Kitchen",
-    cover: IMAGES.chickenSandwich,
+    cover: IMAGES.chickenBurger1,
     logo: avatar("R"),
     followers: "154K",
     products: "3.021",
@@ -84,7 +91,7 @@ export const restaurants = [
   {
     id: "bkbites-hub",
     name: "BkBite's Hub",
-    cover: IMAGES.bigCheeseburger,
+    cover: IMAGES.burgerBlackPlate,
     logo: avatar("b"),
     followers: "234K",
     products: "5.467",
@@ -111,7 +118,7 @@ export const menuItems = [
     reviews: 120,
     deliveryTime: "20 Min",
     ingredients: "Beef patty, brioche bun, cheddar, lettuce, tomato, house sauce.",
-    image: IMAGES.cheeseburger,
+    image: IMAGES.burgerClassic,
   },
   {
     id: "bbq-burger",
@@ -124,7 +131,7 @@ export const menuItems = [
     reviews: 98,
     deliveryTime: "25 Min",
     ingredients: "Beef patty, smoky BBQ glaze, onion rings, cheddar, brioche bun.",
-    image: IMAGES.homemadeCheeseburger,
+    image: IMAGES.burgerCrispy,
   },
   {
     id: "beef-burger",
@@ -137,7 +144,7 @@ export const menuItems = [
     reviews: 64,
     deliveryTime: "18 Min",
     ingredients: "Grilled beef patty, pickles, mustard, ketchup, sesame bun.",
-    image: IMAGES.cheeseburger2,
+    image: IMAGES.burgerPlate,
   },
   {
     id: "chicken-burger",
@@ -150,7 +157,7 @@ export const menuItems = [
     reviews: 77,
     deliveryTime: "20 Min",
     ingredients: "Crispy chicken fillet, slaw, spicy mayo, toasted bun.",
-    image: IMAGES.chickenSandwich,
+    image: IMAGES.chickenBurger1,
   },
   {
     id: "smoky-burger",
@@ -163,7 +170,7 @@ export const menuItems = [
     reviews: 55,
     deliveryTime: "22 Min",
     ingredients: "Double beef patty, smoked cheese, caramelized onion, bacon.",
-    image: IMAGES.bigCheeseburger,
+    image: IMAGES.burgerGuac,
   },
   {
     id: "big-mac-burger",
@@ -176,7 +183,7 @@ export const menuItems = [
     reviews: 143,
     deliveryTime: "20 Min",
     ingredients: "Double beef patty, lettuce, cheese, pickles, special sauce, sesame bun.",
-    image: IMAGES.cheeseburgerMaison,
+    image: IMAGES.burgerDecor,
   },
   {
     id: "beef-spicy-burger",
@@ -190,7 +197,7 @@ export const menuItems = [
     deliveryTime: "30 Min",
     ingredients:
       "Ground beef, hamburger buns, salt, pepper, optional: cheese, lettuce, tomato, onion, pickles mayonnaise.",
-    image: IMAGES.bigCheeseburger,
+    image: IMAGES.burgerRelish,
   },
   {
     id: "fried-chicken",
@@ -229,7 +236,7 @@ export const menuItems = [
     reviews: 132,
     deliveryTime: "25 Min",
     ingredients: "San Marzano tomato, fresh mozzarella, basil, olive oil, wood-fired crust.",
-    image: IMAGES.pizzaClassic,
+    image: IMAGES.pizzaBoard,
   },
   {
     id: "supreme-pizza",
@@ -242,7 +249,7 @@ export const menuItems = [
     reviews: 210,
     deliveryTime: "28 Min",
     ingredients: "Pepperoni, mushroom, bell pepper, mozzarella, house tomato sauce.",
-    image: IMAGES.pizzaSupreme,
+    image: IMAGES.pizzaPepperoni,
   },
   {
     id: "pepperoni-slice",
@@ -255,7 +262,7 @@ export const menuItems = [
     reviews: 59,
     deliveryTime: "15 Min",
     ingredients: "Double pepperoni, mozzarella, oregano, crispy thin crust.",
-    image: IMAGES.pizzaSlice,
+    image: IMAGES.pizzaCloseup,
   },
   {
     id: "vanilla-ice-cream",
@@ -268,7 +275,7 @@ export const menuItems = [
     reviews: 76,
     deliveryTime: "15 Min",
     ingredients: "250g (1 Cup) — creamy vanilla soft serve in a crisp waffle cone.",
-    image: IMAGES.vanillaIceCream,
+    image: IMAGES.iceCreamCone,
   },
   {
     id: "raspberry-ice-cream",
@@ -281,7 +288,7 @@ export const menuItems = [
     reviews: 48,
     deliveryTime: "15 Min",
     ingredients: "Black raspberry ice cream, waffle cone, berry swirl.",
-    image: IMAGES.raspberryIceCream,
+    image: IMAGES.iceCreamCone,
   },
   {
     id: "grilled-ribeye-steak",
@@ -294,7 +301,7 @@ export const menuItems = [
     reviews: 91,
     deliveryTime: "30 Min",
     ingredients: "Ribeye steak, garlic butter, rosemary, roasted potatoes.",
-    image: IMAGES.steakGrilling,
+    image: IMAGES.steakFries,
   },
   {
     id: "t-bone-steak",
@@ -307,7 +314,7 @@ export const menuItems = [
     reviews: 67,
     deliveryTime: "32 Min",
     ingredients: "T-bone cut, cracked pepper crust, herb butter, grilled vegetables.",
-    image: IMAGES.steakGrill,
+    image: IMAGES.steakPlated,
   },
   {
     id: "grilled-shrimp-skewers",
@@ -320,7 +327,7 @@ export const menuItems = [
     reviews: 54,
     deliveryTime: "22 Min",
     ingredients: "Jumbo shrimp, garlic chili marinade, lime, fresh herbs.",
-    image: IMAGES.shrimp,
+    image: IMAGES.seafoodGrilled,
   },
   {
     id: "grilled-salmon",
@@ -333,7 +340,7 @@ export const menuItems = [
     reviews: 83,
     deliveryTime: "25 Min",
     ingredients: "Atlantic salmon fillet, lemon butter sauce, seasonal greens.",
-    image: IMAGES.salmon,
+    image: IMAGES.seafoodSashimi,
   },
   {
     id: "salmon-fillet-plate",
@@ -346,7 +353,7 @@ export const menuItems = [
     reviews: 39,
     deliveryTime: "25 Min",
     ingredients: "Pan-seared salmon fillet, herb rice, citrus glaze.",
-    image: IMAGES.salmonFillet,
+    image: IMAGES.seafoodGrilled,
   },
   {
     id: "chicken-rice",
@@ -359,7 +366,7 @@ export const menuItems = [
     reviews: 72,
     deliveryTime: "20 Min",
     ingredients: "Poached chicken, fragrant rice, ginger-scallion sauce, cucumber.",
-    image: IMAGES.chickenSandwich,
+    image: IMAGES.chickenBurger2,
   },
 ];
 

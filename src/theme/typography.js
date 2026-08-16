@@ -1,8 +1,10 @@
 // The brand board specifies "Aclonica" as the display typeface.
-// Loaded via @expo-google-fonts/aclonica in App.js as "Aclonica".
+// Loaded via @expo-google-fonts/aclonica in App.js as "Aclonica", and
+// applied globally to every Text/TextInput (see setDefaultFont in App.js)
+// so the whole app — not just headings — uses it.
 export const fonts = {
-  display: "Aclonica", // headings / hero text
-  body: undefined, // falls back to the RN system font for body copy
+  display: "Aclonica",
+  body: "Aclonica",
 };
 
 export const spacing = {

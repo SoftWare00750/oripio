@@ -19,9 +19,9 @@ import OrdersHistoryScreen from "../screens/OrdersHistoryScreen";
 
 const Stack = createNativeStackNavigator();
 
-function AuthStack() {
+function AuthStack({ initialRouteName }) {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={initialRouteName}>
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
@@ -49,7 +49,7 @@ function AppStack() {
 }
 
 export default function RootNavigator() {
-  const { isAuthenticated, initializing } = useAuth();
+  const { isAuthenticated, initializing, skipOnboarding } = useAuth();
 
   if (initializing) {
     return (
@@ -59,5 +59,9 @@ export default function RootNavigator() {
     );
   }
 
-  return isAuthenticated ? <AppStack /> : <AuthStack />;
+  return isAuthenticated ? (
+    <AppStack />
+  ) : (
+    <AuthStack initialRouteName={skipOnboarding ? "Login" : "Onboarding"} />
+  );
 }

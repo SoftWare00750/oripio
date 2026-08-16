@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
+  BackHandler,
   Image,
   RefreshControl,
   ScrollView,
@@ -11,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
@@ -21,7 +24,26 @@ import CategoryIcon from "../components/CategoryIcon";
 import RestaurantCard from "../components/RestaurantCard";
 
 export default function HomeScreen({ navigation }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+
+  // Home is the root screen of the app, so the back button doesn't have
+  // anywhere further "back" to go — instead it offers to sign the user
+  // out, matching the requested flow (confirm -> Sign In screen).
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert("Log Out", "Do you want to Log Out?", [
+          { text: "Cancel", style: "cancel" },
+          { text: "Log Out", style: "destructive", onPress: () => logout() },
+        ]);
+        return true;
+      };
+
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () => subscription.remove();
+    }, [logout])
+  );
+
   const [categories, setCategories] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [search, setSearch] = useState("");
@@ -156,7 +178,7 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
-  scroll: { paddingBottom: spacing.xl },
+  scroll: { paddingBottom: 110 },
   headerCard: {
     backgroundColor: "#181818",
     borderRadius: radius.lg,

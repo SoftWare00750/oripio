@@ -1,12 +1,5 @@
 import React, { useRef, useState } from "react";
-import {
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
@@ -16,21 +9,30 @@ import { IMAGES } from "../data/mockData";
 
 const { width } = Dimensions.get("window");
 
+// Slides 1 & 3 use the exact branded artwork supplied for onboarding —
+// the headline text is already baked into the image, so no separate
+// title overlay is rendered for them. Slide 2's supplied artwork wasn't
+// included in the upload, so it falls back to a sourced photo with a
+// text overlay matching the same style until the real asset is provided.
 const SLIDES = [
   {
     key: "1",
-    title: "Dive Into\nPure Flavor",
-    image: IMAGES.pizzaSupreme,
+    image: require("../../assets/images/onboarding/slide-pizza.png"),
+    baked: true,
+    ratio: 212 / 313,
   },
   {
     key: "2",
+    image: { uri: IMAGES.bigCheeseburger },
+    baked: false,
     title: "Step Into\nFlavor World",
-    image: IMAGES.bigCheeseburger,
+    ratio: 1,
   },
   {
     key: "3",
-    title: "Flavor\nAwaits You",
-    image: IMAGES.raspberryIceCream,
+    image: require("../../assets/images/onboarding/slide-icecream.png"),
+    baked: true,
+    ratio: 233 / 312,
   },
 ];
 
@@ -44,7 +46,7 @@ export default function OnboardingScreen({ navigation }) {
   };
 
   return (
-    <LinearGradient colors={["#241211", colors.primary]} style={styles.flex}>
+    <LinearGradient colors={[colors.primary, colors.accentCoral]} style={styles.flex}>
       <SafeAreaView style={styles.flex} edges={["top", "bottom"]}>
         <FlatList
           ref={listRef}
@@ -65,15 +67,21 @@ export default function OnboardingScreen({ navigation }) {
                 ))}
               </View>
 
-              <Text style={styles.title}>{item.title}</Text>
+              {!item.baked && <Text style={styles.title}>{item.title}</Text>}
 
-              <Image source={{ uri: item.image }} style={styles.image} resizeMode="cover" />
+              <Image
+                source={item.image}
+                style={[
+                  styles.image,
+                  item.baked
+                    ? { height: undefined, aspectRatio: item.ratio, borderRadius: 0 }
+                    : null,
+                ]}
+                resizeMode={item.baked ? "contain" : "cover"}
+              />
 
               <View style={styles.actions}>
-                <Button
-                  title="Get Started"
-                  onPress={() => navigation.navigate("Signup")}
-                />
+                <Button title="Get Started" onPress={() => navigation.navigate("Signup")} />
                 <View style={{ height: spacing.md }} />
                 <Button
                   title="I already have an account"

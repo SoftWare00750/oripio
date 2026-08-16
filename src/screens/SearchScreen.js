@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     height: 46,
   },
   input: { flex: 1, marginLeft: 8, fontSize: 14, color: colors.text },
-  grid: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl },
+  grid: { paddingHorizontal: spacing.lg, paddingBottom: 110 },
   sectionTitle: { fontSize: 15, fontWeight: "800", color: colors.text, marginBottom: spacing.sm },
   empty: { textAlign: "center", color: colors.textMuted, marginTop: spacing.xl },
   hint: { alignItems: "center", marginTop: spacing.xxl },

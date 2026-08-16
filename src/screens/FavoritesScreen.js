@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     paddingBottom: spacing.md,
   },
-  grid: { paddingHorizontal: spacing.lg, paddingBottom: spacing.xl, flexGrow: 1 },
+  grid: { paddingHorizontal: spacing.lg, paddingBottom: 110, flexGrow: 1 },
   emptyWrap: { alignItems: "center", justifyContent: "center", paddingTop: spacing.xxl, width: "100%" },
   emptyText: {
     color: colors.textMuted,

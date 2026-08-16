@@ -9,6 +9,9 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [initializing, setInitializing] = useState(true);
+  // Once someone has logged out mid-session, skip the onboarding carousel
+  // and drop them straight on the Sign In screen next time.
+  const [skipOnboarding, setSkipOnboarding] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -62,6 +65,7 @@ export function AuthProvider({ children }) {
     await AsyncStorage.removeItem(TOKEN_KEY);
     setToken(null);
     setUser(null);
+    setSkipOnboarding(true);
   }, []);
 
   const value = useMemo(
@@ -70,12 +74,13 @@ export function AuthProvider({ children }) {
       token,
       initializing,
       isAuthenticated: !!token,
+      skipOnboarding,
       signup,
       login,
       continueAsGuest,
       logout,
     }),
-    [user, token, initializing, signup, login, continueAsGuest, logout]
+    [user, token, initializing, skipOnboarding, signup, login, continueAsGuest, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
