@@ -1,7 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useRef, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { useCallback, useRef, useState } from "react";
+import { BackHandler, Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import Button from "../components/Button";
 import { colors } from "../theme/colors";
 import { fonts, spacing } from "../theme/typography";
@@ -42,6 +43,26 @@ export default function OnboardingScreen({ navigation }) {
     const i = Math.round(e.nativeEvent.contentOffset.x / width);
     setIndex(i);
   };
+
+  // Hardware back button: step back one slide at a time. On the very
+  // first slide there's nowhere further back to go, so it exits the app
+  // (this is the root screen of the whole navigation stack).
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (index > 0) {
+          const prevIndex = index - 1;
+          listRef.current?.scrollToIndex({ index: prevIndex, animated: true });
+          setIndex(prevIndex);
+        } else {
+          BackHandler.exitApp();
+        }
+        return true;
+      };
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () => subscription.remove();
+    }, [index])
+  );
 
   return (
     <LinearGradient colors={[colors.primary, colors.accentCoral]} style={styles.flex}>

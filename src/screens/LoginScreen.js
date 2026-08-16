@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
+  BackHandler,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -10,18 +11,35 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 import { colors } from "../theme/colors";
 import { fonts, radius, spacing } from "../theme/typography";
 import { useAuth } from "../context/AuthContext";
 import Button from "../components/Button";
 import Logo from "../components/Logo";
+import SocialButton from "../components/SocialButton";
 
 export default function LoginScreen({ navigation }) {
-  const { login, continueAsGuest } = useAuth();
+  const { login, continueAsGuest, socialLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(null); // "google" | "facebook" | null
   const [error, setError] = useState("");
+
+  // Hardware back button on the Login screen should return to the
+  // onboarding carousel rather than exiting the app or falling through
+  // to whatever the default stack behavior would be.
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate("Onboarding");
+        return true;
+      };
+      const subscription = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () => subscription.remove();
+    }, [navigation])
+  );
 
   const onLogin = async () => {
     setError("");
@@ -36,6 +54,18 @@ export default function LoginScreen({ navigation }) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const onSocialLogin = async (provider) => {
+    setError("");
+    setSocialLoading(provider);
+    try {
+      await socialLogin(provider);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSocialLoading(null);
     }
   };
 
@@ -75,6 +105,25 @@ export default function LoginScreen({ navigation }) {
 
           <View style={{ height: spacing.lg }} />
           <Button title="Log In" onPress={onLogin} loading={loading} />
+
+          <View style={styles.dividerRow}>
+            <View style={styles.dividerLine} />
+            <Text style={styles.dividerText}>or continue with</Text>
+            <View style={styles.dividerLine} />
+          </View>
+
+          <View style={styles.socialRow}>
+            <SocialButton
+              provider="google"
+              onPress={() => onSocialLogin("google")}
+              style={socialLoading === "google" && styles.socialDisabled}
+            />
+            <SocialButton
+              provider="facebook"
+              onPress={() => onSocialLogin("facebook")}
+              style={socialLoading === "facebook" && styles.socialDisabled}
+            />
+          </View>
 
           <TouchableOpacity
             style={styles.guestBtn}
@@ -132,6 +181,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
     backgroundColor: colors.surface,
   },
+  dividerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: spacing.lg,
+  },
+  dividerLine: { flex: 1, height: 1, backgroundColor: colors.border },
+  dividerText: {
+    color: colors.textMuted,
+    fontSize: 12,
+    marginHorizontal: spacing.sm,
+  },
+  socialRow: {
+    flexDirection: "row",
+    gap: spacing.sm,
+    marginTop: spacing.md,
+  },
+  socialDisabled: { opacity: 0.6 },
   guestBtn: { alignItems: "center", marginTop: spacing.lg },
   guestText: { color: colors.primary, fontWeight: "700" },
   footer: {

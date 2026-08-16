@@ -61,6 +61,15 @@ export function AuthProvider({ children }) {
     return data.user;
   }, [persistSession]);
 
+  const socialLogin = useCallback(
+    async (provider) => {
+      const data = await authApi.socialLogin(provider);
+      await persistSession(data);
+      return data.user;
+    },
+    [persistSession]
+  );
+
   const logout = useCallback(async () => {
     await AsyncStorage.removeItem(TOKEN_KEY);
     setToken(null);
@@ -78,9 +87,20 @@ export function AuthProvider({ children }) {
       signup,
       login,
       continueAsGuest,
+      socialLogin,
       logout,
     }),
-    [user, token, initializing, skipOnboarding, signup, login, continueAsGuest, logout]
+    [
+      user,
+      token,
+      initializing,
+      skipOnboarding,
+      signup,
+      login,
+      continueAsGuest,
+      socialLogin,
+      logout,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -40,6 +40,27 @@ export async function login({ email, password }) {
   return createSession(user);
 }
 
+export async function socialLogin(provider) {
+  await delay(200);
+  const label = provider === "google" ? "Google" : "Facebook";
+  const key = `${provider}-user@oripio.app`;
+  const users = await readJSON(USERS_KEY, {});
+  let record = users[key];
+  if (!record) {
+    record = {
+      id: uid(provider),
+      name: `${label} User`,
+      email: key,
+      address: "Mirpur, Dhaka Bangladesh",
+      provider,
+    };
+    users[key] = record;
+    await writeJSON(USERS_KEY, users);
+  }
+  const { password: _pw, ...user } = record;
+  return createSession(user);
+}
+
 export async function continueAsGuest() {
   await delay(150);
   const user = {
