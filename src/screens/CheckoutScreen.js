@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -18,6 +17,7 @@ import { useCart } from "../context/CartContext";
 import { placeOrder } from "../api/orders";
 import ScreenHeader from "../components/ScreenHeader";
 import Button from "../components/Button";
+import StylizedMap from "../components/StylizedMap";
 
 const METHODS = [
   { id: "card", label: "Credit & Debit Cards", icon: "card-outline" },
@@ -134,10 +134,7 @@ export default function CheckoutScreen({ navigation }) {
 
           <Text style={styles.sectionTitle}>Delivery Address</Text>
           <View style={styles.mapPlaceholder}>
-            <Image
-              source={{ uri: "https://picsum.photos/seed/checkout-map/600/240" }}
-              style={StyleSheet.absoluteFill}
-            />
+            <StylizedMap style={StyleSheet.absoluteFill} />
             <Ionicons
               name="location-sharp"
               size={28}

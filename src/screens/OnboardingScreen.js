@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../theme/colors";
 import { fonts, spacing } from "../theme/typography";
 import Button from "../components/Button";
+import { IMAGES } from "../data/mockData";
 
 const { width } = Dimensions.get("window");
 
@@ -19,17 +20,17 @@ const SLIDES = [
   {
     key: "1",
     title: "Dive Into\nPure Flavor",
-    image: "https://picsum.photos/seed/onboard-pizza/500/500",
+    image: IMAGES.pizzaSupreme,
   },
   {
     key: "2",
     title: "Step Into\nFlavor World",
-    image: "https://picsum.photos/seed/onboard-burger/500/500",
+    image: IMAGES.bigCheeseburger,
   },
   {
     key: "3",
     title: "Flavor\nAwaits You",
-    image: "https://picsum.photos/seed/onboard-icecream/500/500",
+    image: IMAGES.raspberryIceCream,
   },
 ];
 

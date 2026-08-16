@@ -15,6 +15,7 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
 import { fetchCategories, fetchRestaurants } from "../api/catalog";
+import { IMAGES } from "../data/mockData";
 import { useAuth } from "../context/AuthContext";
 import CategoryIcon from "../components/CategoryIcon";
 import RestaurantCard from "../components/RestaurantCard";
@@ -85,10 +86,7 @@ export default function HomeScreen({ navigation }) {
                 Enjoy your first order with a special discount!
               </Text>
             </View>
-            <Image
-              source={{ uri: "https://picsum.photos/seed/home-discount/200/200" }}
-              style={styles.discountImage}
-            />
+            <Image source={{ uri: IMAGES.bigCheeseburger }} style={styles.discountImage} />
           </View>
 
           <View style={styles.searchRow}>

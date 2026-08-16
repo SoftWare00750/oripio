@@ -1,39 +1,34 @@
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform } from "react-native";
 
-// Point this at your machine's LAN IP when testing on a physical device,
-// e.g. "http://192.168.1.20:4000/api" — "localhost" only works in the
-// iOS simulator / Android emulator with adb reverse.
-const DEV_HOST = Platform.select({
-  android: "http://10.0.2.2:4000/api", // Android emulator loopback to host machine
-  default: "http://localhost:4000/api",
-});
-
-export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || DEV_HOST;
+// Oripio ships with a fully self-contained, on-device "backend": all data
+// lives in AsyncStorage and every api/*.js module simulates the network
+// calls a real server would handle. This means the app works standalone,
+// with no server to run or configure. Swap these modules out for real
+// `fetch`/`axios` calls whenever a real backend is ready — every screen
+// and context already talks to this layer through stable function
+// signatures, so nothing above this layer needs to change.
 
 export const TOKEN_KEY = "oripio_auth_token";
+export const SESSION_KEY = "oripio_session"; // { token, user }
+export const USERS_KEY = "oripio_users"; // { [email]: { ...user, password } }
 
-const client = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
-});
+export function delay(ms = 300) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
-client.interceptors.request.use(async (config) => {
-  const token = await AsyncStorage.getItem(TOKEN_KEY);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+export function uid(prefix = "id") {
+  return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
+
+export async function readJSON(key, fallback) {
+  try {
+    const raw = await AsyncStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (err) {
+    return fallback;
   }
-  return config;
-});
+}
 
-client.interceptors.response.use(
-  (res) => res,
-  (error) => {
-    const message =
-      error?.response?.data?.message || error?.message || "Something went wrong";
-    return Promise.reject(new Error(message));
-  }
-);
-
-export default client;
+export async function writeJSON(key, value) {
+  await AsyncStorage.setItem(key, JSON.stringify(value));
+}

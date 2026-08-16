@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
 import { fetchOrder } from "../api/orders";
+import StylizedMap from "../components/StylizedMap";
 
 export default function TrackingScreen({ route, navigation }) {
   const { orderId } = route.params;
@@ -43,10 +44,7 @@ export default function TrackingScreen({ route, navigation }) {
   return (
     <SafeAreaView style={styles.safe} edges={["top"]}>
       <View style={styles.mapWrap}>
-        <Image
-          source={{ uri: "https://picsum.photos/seed/tracking-map/800/500" }}
-          style={StyleSheet.absoluteFill}
-        />
+        <StylizedMap style={StyleSheet.absoluteFill} />
         <TouchableOpacity style={styles.mapIconBtn} onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back" size={20} color={colors.text} />
         </TouchableOpacity>
