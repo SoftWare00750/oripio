@@ -1,11 +1,10 @@
-import React, { useRef, useState } from "react";
-import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useRef, useState } from "react";
+import { Dimensions, FlatList, Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Button from "../components/Button";
 import { colors } from "../theme/colors";
 import { fonts, spacing } from "../theme/typography";
-import Button from "../components/Button";
-import { IMAGES } from "../data/mockData";
 
 const { width } = Dimensions.get("window");
 
@@ -19,14 +18,13 @@ const SLIDES = [
     key: "1",
     image: require("../../assets/images/onboarding/slide-pizza.png"),
     baked: true,
-    ratio: 212 / 313,
+    ratio: 233 / 312,
   },
   {
     key: "2",
-    image: { uri: IMAGES.bigCheeseburger },
-    baked: false,
-    title: "Step Into\nFlavor World",
-    ratio: 1,
+    image: require("../../assets/images/onboarding/slide-burger.png"),
+    baked: true,
+    ratio: 233 / 312,
   },
   {
     key: "3",
