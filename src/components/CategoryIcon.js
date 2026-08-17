@@ -1,8 +1,6 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../theme/colors";
-import { spacing } from "../theme/typography";
 
 const ICONS = {
   burger: "hamburger",
@@ -28,7 +26,7 @@ export default function CategoryIcon({ category, active, onPress }) {
 }
 
 const styles = StyleSheet.create({
-  wrap: { alignItems: "center", marginRight: spacing.lg },
+  wrap: { alignItems: "center" },
   circle: {
     width: 56,
     height: 56,

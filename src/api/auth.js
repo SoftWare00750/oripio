@@ -1,5 +1,20 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TOKEN_KEY, SESSION_KEY, USERS_KEY, delay, uid, readJSON, writeJSON } from "./client";
+import { SESSION_KEY, TOKEN_KEY, USERS_KEY, delay, readJSON, uid, writeJSON } from "./client";
+
+// Earlier builds shipped with this as the hardcoded default delivery
+// address. Any account/session/guest created back then already has it
+// saved to on-device storage, so just changing the default below won't
+// fix it for people who already have data saved — we also need to patch
+// any record we come across that still has the old value.
+const OLD_DEFAULT_ADDRESS = "Mirpur, Dhaka Bangladesh";
+const DEFAULT_ADDRESS = "Ikeja, Lagos";
+
+function migrateAddress(user) {
+  if (user && user.address === OLD_DEFAULT_ADDRESS) {
+    return { ...user, address: DEFAULT_ADDRESS };
+  }
+  return user;
+}
 
 async function createSession(user) {
   const token = uid("tok");
@@ -21,7 +36,7 @@ export async function signup({ name, email, password }) {
     id: uid("user"),
     name,
     email: key,
-    address: "Mirpur, Dhaka Bangladesh",
+    address: DEFAULT_ADDRESS,
   };
   users[key] = { ...user, password };
   await writeJSON(USERS_KEY, users);
@@ -36,7 +51,12 @@ export async function login({ email, password }) {
   if (!record || record.password !== password) {
     throw new Error("Invalid email or password.");
   }
-  const { password: _pw, ...user } = record;
+  const { password: _pw, ...rest } = record;
+  const user = migrateAddress(rest);
+  if (user.address !== rest.address) {
+    users[key] = { ...record, address: user.address };
+    await writeJSON(USERS_KEY, users);
+  }
   return createSession(user);
 }
 
@@ -51,7 +71,7 @@ export async function socialLogin(provider) {
       id: uid(provider),
       name: `${label} User`,
       email: key,
-      address: "Mirpur, Dhaka Bangladesh",
+      address: DEFAULT_ADDRESS,
       provider,
     };
     users[key] = record;
@@ -67,7 +87,7 @@ export async function continueAsGuest() {
     id: uid("guest"),
     name: "Guest",
     email: null,
-    address: "Mirpur, Dhaka Bangladesh",
+    address: DEFAULT_ADDRESS,
     isGuest: true,
   };
   return createSession(user);
@@ -80,5 +100,16 @@ export async function fetchMe() {
   if (!token || !session || session.token !== token) {
     throw new Error("Session expired. Please log in again.");
   }
-  return session.user;
+  const user = migrateAddress(session.user);
+  if (user.address !== session.user.address) {
+    await writeJSON(SESSION_KEY, { ...session, user });
+    if (user.email) {
+      const users = await readJSON(USERS_KEY, {});
+      if (users[user.email]) {
+        users[user.email] = { ...users[user.email], address: user.address };
+        await writeJSON(USERS_KEY, users);
+      }
+    }
+  }
+  return user;
 }

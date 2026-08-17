@@ -138,7 +138,7 @@ export default function HomeScreen({ navigation }) {
               horizontal
               showsHorizontalScrollIndicator={false}
               style={styles.categoriesRow}
-              contentContainerStyle={{ paddingHorizontal: spacing.lg }}
+              contentContainerStyle={styles.categoriesRowContent}
             >
               {categories.map((cat) => (
                 <CategoryIcon
@@ -223,6 +223,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   categoriesRow: { marginTop: spacing.sm },
+  categoriesRowContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: spacing.lg,
+    paddingHorizontal: spacing.lg,
+  },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",

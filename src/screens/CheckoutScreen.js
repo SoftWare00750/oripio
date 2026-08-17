@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -10,14 +11,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { placeOrder } from "../api/orders";
+import Button from "../components/Button";
+import ScreenHeader from "../components/ScreenHeader";
+import StylizedMap from "../components/StylizedMap";
+import { useCart } from "../context/CartContext";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
-import { useCart } from "../context/CartContext";
-import { placeOrder } from "../api/orders";
-import ScreenHeader from "../components/ScreenHeader";
-import Button from "../components/Button";
-import StylizedMap from "../components/StylizedMap";
 
 const METHODS = [
   { id: "card", label: "Credit & Debit Cards", icon: "card-outline" },
@@ -31,7 +31,7 @@ export default function CheckoutScreen({ navigation }) {
   const [holderName, setHolderName] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvc, setCvc] = useState("");
-  const [address, setAddress] = useState("Mirpur, Dhaka Bangladesh");
+  const [address, setAddress] = useState("Ikeja, Lagos");
   const [agree, setAgree] = useState(false);
   const [placing, setPlacing] = useState(false);
   const [error, setError] = useState("");
