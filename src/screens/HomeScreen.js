@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   Alert,
   BackHandler,
-  Image,
+  ImageBackground,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -19,9 +19,10 @@ import { fetchCategories, fetchRestaurants } from "../api/catalog";
 import CategoryIcon from "../components/CategoryIcon";
 import RestaurantCard from "../components/RestaurantCard";
 import { useAuth } from "../context/AuthContext";
-import { IMAGES } from "../data/mockData";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
+
+const headerBg = require("../../assets/images/homescreen1.png");
 
 export default function HomeScreen({ navigation }) {
   const { user, logout } = useAuth();
@@ -81,7 +82,12 @@ export default function HomeScreen({ navigation }) {
         contentContainerStyle={styles.scroll}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <View style={styles.headerCard}>
+        <ImageBackground
+          source={headerBg}
+          style={styles.headerCard}
+          imageStyle={styles.headerCardImage}
+          resizeMode="cover"
+        >
           <View style={styles.headerTop}>
             <TouchableOpacity style={styles.roundIcon}>
               <Feather name="menu" size={18} color={colors.white} />
@@ -108,7 +114,6 @@ export default function HomeScreen({ navigation }) {
                 Enjoy your first order with a special discount!
               </Text>
             </View>
-            <Image source={{ uri: IMAGES.bigCheeseburger }} style={styles.discountImage} />
           </View>
 
           <View style={styles.searchRow}>
@@ -128,7 +133,7 @@ export default function HomeScreen({ navigation }) {
               <Ionicons name="options-outline" size={18} color={colors.primary} />
             </TouchableOpacity>
           </View>
-        </View>
+        </ImageBackground>
 
         {loading ? (
           <ActivityIndicator style={{ marginTop: spacing.xl }} color={colors.primary} />
@@ -180,10 +185,13 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   scroll: { paddingBottom: 110 },
   headerCard: {
-    backgroundColor: "#181818",
     borderRadius: radius.lg,
     margin: spacing.lg,
     padding: spacing.lg,
+    overflow: "hidden",
+  },
+  headerCardImage: {
+    borderRadius: radius.lg,
   },
   headerTop: { flexDirection: "row", alignItems: "center" },
   roundIcon: {
@@ -202,7 +210,6 @@ const styles = StyleSheet.create({
   discountPercent: { color: colors.primary, fontSize: 30, fontWeight: "800" },
   discountLabel: { color: colors.white, fontSize: 13, fontWeight: "800", marginTop: -4 },
   discountSub: { color: "rgba(255,255,255,0.6)", fontSize: 11, marginTop: 6, maxWidth: 190 },
-  discountImage: { width: 84, height: 84, borderRadius: 16 },
   searchRow: { flexDirection: "row", alignItems: "center", marginTop: spacing.lg, gap: 10 },
   searchBox: {
     flex: 1,

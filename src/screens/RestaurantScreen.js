@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -10,15 +11,15 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
+import { fetchRestaurant } from "../api/catalog";
+import Button from "../components/Button";
+import FoodCard from "../components/FoodCard";
+import { useCart } from "../context/CartContext";
 import { colors } from "../theme/colors";
 import { radius, spacing } from "../theme/typography";
-import { fetchRestaurant } from "../api/catalog";
-import { useCart } from "../context/CartContext";
-import FoodCard from "../components/FoodCard";
-import Button from "../components/Button";
 
 const TABS = ["Popular", "Burger", "Steak", "Pizza", "Appetizer"];
+const headerImage = require("../../assets/images/restaurant/headerimage1.png");
 
 export default function RestaurantScreen({ route, navigation }) {
   const { id } = route.params;
@@ -71,7 +72,7 @@ export default function RestaurantScreen({ route, navigation }) {
         ListHeaderComponent={
           <View>
             <View style={styles.coverWrap}>
-              <Image source={{ uri: restaurant.cover }} style={styles.cover} />
+              <Image source={headerImage} style={styles.cover} />
               <TouchableOpacity
                 style={[styles.roundIcon, styles.coverBack]}
                 onPress={() => navigation.goBack()}
