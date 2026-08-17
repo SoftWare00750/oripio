@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { Feather, Ionicons } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -13,15 +15,13 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useFocusEffect } from "@react-navigation/native";
-import { Ionicons, Feather } from "@expo/vector-icons";
-import { colors } from "../theme/colors";
-import { radius, spacing } from "../theme/typography";
 import { fetchCategories, fetchRestaurants } from "../api/catalog";
-import { IMAGES } from "../data/mockData";
-import { useAuth } from "../context/AuthContext";
 import CategoryIcon from "../components/CategoryIcon";
 import RestaurantCard from "../components/RestaurantCard";
+import { useAuth } from "../context/AuthContext";
+import { IMAGES } from "../data/mockData";
+import { colors } from "../theme/colors";
+import { radius, spacing } from "../theme/typography";
 
 export default function HomeScreen({ navigation }) {
   const { user, logout } = useAuth();
@@ -91,7 +91,7 @@ export default function HomeScreen({ navigation }) {
               <View style={styles.locationRow}>
                 <Ionicons name="location-sharp" size={14} color={colors.primary} />
                 <Text style={styles.locationText}>
-                  {user?.address || "Mirpur, Dhaka Bangladesh"}
+                  {user?.address || "Ikeja, Lagos"}
                 </Text>
               </View>
             </View>
@@ -102,7 +102,7 @@ export default function HomeScreen({ navigation }) {
 
           <View style={styles.discountRow}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.discountPercent}>27%</Text>
+              <Text style={styles.discountPercent}>30%</Text>
               <Text style={styles.discountLabel}>EXTRA DISCOUNT</Text>
               <Text style={styles.discountSub}>
                 Enjoy your first order with a special discount!
